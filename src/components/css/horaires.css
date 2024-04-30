@@ -1,0 +1,41 @@
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #ddd;
+}
+
+.styled-table th, .styled-table td {
+  border: 1px solid #ddd;
+}
+
+.styled-table tr {
+}
+
+.styled-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+  font-weight: bold;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+.styled-table input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease-in-out;
+  width: 70px;
+}
+
+.styled-table input[type="text"]:focus {
+  outline: none;
+  border-color: #5b9dd9;
+}
