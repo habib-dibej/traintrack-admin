@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom for navigation
 import "../css/Login.css";
 
-
 const Login = ({ onLogin }) => {
-  const [id, setId] = useState(""); // State for ID
+  const [email, setEmail] = useState(""); // State for Email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,32 +13,23 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Fetch user data based on ID
-      const { data: user, error: userError } = await supabase
-        .from('user')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (userError) {
-        setError(userError.message);
-        setLoading(false);
-        return;
-      }
-
-      if (!user) {
-        setError("User does not exist.");
-        setLoading(false);
-        return;
-      }
-
       // Authenticate user with email and password
-      const { error: authError } = await supabase.auth.signInWithPassword({ email: user.email, password });
+      const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
+      console.log(data);
+      const uuid = data.user.id;
+      const {data: updateData , error: updateError} = await supabase.from('user').update({uuid: uuid}).eq('email', email);
+      console.log(updateData);
+      if (updateError) {
+        setError(updateError.message);
+      }
+      
       if (authError) {
         setError(authError.message);
+      } else if (data.user) {
+        onLogin(data.user.email); // Pass email to onLogin function
       } else {
-        onLogin(user.email); // Pass email to onLogin function
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
       console.error("Login error:", error.message);
@@ -54,11 +45,11 @@ const Login = ({ onLogin }) => {
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Matricule:</label>
+          <label>Email:</label>
           <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>
@@ -71,6 +62,9 @@ const Login = ({ onLogin }) => {
         </div>
         <button type="submit" disabled={loading}>Login</button>
       </form>
+      <div className="signup-link">
+        <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+      </div>
     </div>
   );
 };

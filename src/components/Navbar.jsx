@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./css/Navbar.css";
 
-export const Navbar = () => {
+const Navbar = ({ isAdmin }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -15,31 +15,32 @@ export const Navbar = () => {
   return (
     <nav>
       <NavLink to="/" className="title">
-        Horaires
+        Controle Qualite
       </NavLink>
       <div className="menu" onClick={() => setMenuOpen(!menuOpen)}></div>
       <ul className={menuOpen ? "open" : ""}>
-        <li>
-          <NavLink to="/Horairesms" activeClassName="active">
-            Mahdia-Sousse
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/horairessm" activeClassName="active">
-            Sousse-Mahdia
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/Reclamation" activeClassName="active">
-            Réclamation
-          </NavLink>
-        </li>
         <li>
           <NavLink to="/Profile" activeClassName="active">
             Profile
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/Cablage">Cablage</NavLink>
+        </li>
+        <li>
+          <NavLink to="/Trad">Trad</NavLink>
+        </li>
+        <li>
+          <NavLink to="/Recherche">Recherche</NavLink>
+        </li>
+        {isAdmin && ( // Afficher uniquement si l'utilisateur est admin
+          <li>
+            <NavLink to="/Admin">Admin</NavLink>
+          </li>
+        )}
       </ul>
     </nav>
   );
 };
+
+export default Navbar;

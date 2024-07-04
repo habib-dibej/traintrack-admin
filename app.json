@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "93b7826b-ecc5-45b9-9095-c0d0b0d56bee"
+      }
+    },
+    "android": {
+      "package": "com.habib311.reactnavbar"
+    }
+  }
+}
